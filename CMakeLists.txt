@@ -46,11 +46,15 @@ pico_enable_stdio_usb(scicalc-sw 0)
 
 # Add the standard library to the build
 target_link_libraries(scicalc-sw
-        pico_stdlib)
+        pico_stdlib
+        hardware_spi
+        st7789
+        gfx)
 
 # Add the standard include files to the build
 target_include_directories(scicalc-sw PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
+        pico-displayDrivs
 )
 
 pico_add_extra_outputs(scicalc-sw)
