@@ -12,7 +12,7 @@ int checkComplete(char *exp){
         if(bracketCount<0){
             return 0; // for the edge case where )x+2( is entered
         }
-
+        // doesnt allow multiple symbols consecutively. 
         if(currChar == '+' || currChar == '/' || currChar == '*' || currChar == '^' || currChar == '-'){
             if(prevChar == '+' || prevChar == '-' || prevChar == '*' || prevChar == '/'){
                 charErr = 1;
@@ -22,15 +22,17 @@ int checkComplete(char *exp){
         prevChar = currChar;
         c++;
     }
-
+    // returns if  bracket count is not in order or multiple symbols are used consecutively. 
     if(bracketCount == 0&&charErr==0) return 1;
     else return 0;
 }
 
-int main(){
-    char exp[20];
-    scanf("%[^\n]", &exp);
-    int x = checkComplete(exp);
-    printf("%d", x);
-    return 0;
-}
+
+// checker loop: 
+// int main(){
+//     char exp[20];
+//     scanf("%[^\n]", &exp);
+//     int x = checkComplete(exp);
+//     printf("%d", x);
+//     return 0;
+// }

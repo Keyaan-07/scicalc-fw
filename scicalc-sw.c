@@ -13,6 +13,7 @@
 #define DISPLAY_WIDTH 240
 #define DISPLAY_HEIGHT 320
 // i will be using pico-displayDrivs library to drive the screen. 
+uint16_t framebuf[DISPLAY_HEIGHT][DISPLAY_WIDTH];
 
 void lcd_init(){
     LCD_initDisplay(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -40,6 +41,11 @@ int main()
     lcd_init();
     
     while (true) {
+        for(int i = 0; i<DISPLAY_HEIGHT; i++){
+            for(int j = 0;j<DISPLAY_WIDTH;j++){
+                
+            }
+        }
         GFX_setCursor(0,0);
         GFX_printf("Hello, World %d", ++c);
         GFX_flush();
