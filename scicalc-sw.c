@@ -3,6 +3,7 @@
 #include "hardware/spi.h"
 #include "pico-displayDrivs/st7789/st7789.h"
 #include "pico-displayDrivs/gfx/gfx.h"
+#include "mathfuncs/mathfuncs.h"
 
 #define PIN_MOSI 1
 #define PIN_MISO 2
@@ -23,6 +24,8 @@ void lcd_init(){
 
 int main()
 {
+    // taken from the pico-displayDrivs example: 
+    int c = 0;
     stdio_init_all();
     spi_init(spi0, 1000*1000);
 
@@ -35,9 +38,10 @@ int main()
     gpio_put(PIN_CS, 1);
 
     lcd_init();
-
     
     while (true) {
-        
+        GFX_setCursor(0,0);
+        GFX_printf("Hello, World %d", ++c);
+        GFX_flush();
     }
 }

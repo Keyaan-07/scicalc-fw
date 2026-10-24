@@ -55,6 +55,7 @@ target_link_libraries(scicalc-sw
 target_include_directories(scicalc-sw PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
         pico-displayDrivs
+        mathfuncs
 )
 
 pico_add_extra_outputs(scicalc-sw)

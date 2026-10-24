@@ -28,18 +28,18 @@ struct matrix matrix_mul(struct matrix m1, struct matrix m2){
     }
 }
 
-
-int main(){
-    struct matrix m1;
-    struct matrix m2;
-    m1.rows = 2, m1.cols = 2, m2.rows = 2, m2.cols = 2;
-    m1.digits = (float[]){1,2,3,4};
-    m2.digits = (float[]){2,0,1,2};
-    struct matrix rrr = matrix_mul(m1,m2);
-    for(int i = 0; i< rrr.rows; i++){
-        for(int j = 0; j< rrr.cols; j++){
-            printf("%f", rrr.digits[i*rrr.cols + j]);
-        }
-    }
-    return 0;
-}
+// test code: (should output 4.0000004.00000010.0000008.000000)
+// int main(){
+//     struct matrix m1;
+//     struct matrix m2;
+//     m1.rows = 2, m1.cols = 2, m2.rows = 2, m2.cols = 2;
+//     m1.digits = (float[]){1,2,3,4};
+//     m2.digits = (float[]){2,0,1,2};
+//     struct matrix rrr = matrix_mul(m1,m2);
+//     for(int i = 0; i< rrr.rows; i++){
+//         for(int j = 0; j< rrr.cols; j++){
+//             printf("%f", rrr.digits[i*rrr.cols + j]);
+//         }
+//     }
+//     return 0;
+// }
