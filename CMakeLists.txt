@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(scicalc-sw scicalc-sw.c )
+add_executable(scicalc-sw scicalc-sw.c mathfuncs/core-math.c mathfuncs/parser.c mathfuncs/matmul.c pico-displayDrivs/st7789/st7789.c pico-displayDrivs/gfx/gfx.c)
 
 pico_set_program_name(scicalc-sw "scicalc-sw")
 pico_set_program_version(scicalc-sw "0.1")
@@ -49,9 +49,8 @@ target_link_libraries(scicalc-sw
         pico_stdlib
         hardware_spi
         hardware_pwm
-        st7789
-        gfx
-        mathfuncs)
+        hardware_dma
+        )
 
 # Add the standard include files to the build
 target_include_directories(scicalc-sw PRIVATE

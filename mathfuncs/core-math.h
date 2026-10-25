@@ -1,5 +1,6 @@
-#ifndef CORE-MATH_H
-#define CORE-MATH_H
+#ifndef CORE_MATH_H
+#define CORE_MATH_H
+#include "stdbool.h"
 
 float divide(float x, float y);
 float sin_v(float x, bool deg);

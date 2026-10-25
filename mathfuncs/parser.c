@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 // #include <string.h>
 int checkComplete(char *exp){
     int c = 0;

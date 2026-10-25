@@ -31,7 +31,7 @@ int cursor_pos = 0;
 bool shifted = false;
 bool graph_mode = false;
 bool brt_mode = 0;
-
+float ans_val = 0.0;
 
 int lcd_init(){
     LCD_initDisplay(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -76,13 +76,10 @@ void displayAnswer(){
         }
 
 
-        if(checkComplete(math_str){
-            float ans_val = evaluate(math_str);
+        if(checkComplete(math_str)){
+            ans_val = evaluate(math_str);
             GFX_printf("%.4f", ans_val);
             GFX_flush();
-        }
-        else{
-            
         }
     }
 }
@@ -113,6 +110,10 @@ void scan_keys_matrix(){
                     if(token_id == AC){
                         tokens = 0;
                         cursor_pos = 0;
+                        ans_val = 0.0;
+                        memset(answer, 0, sizeof(answer));
+                        GFX_clearScreen();
+                        GFX_flush();
                     }
                     else if(token_id == DEL){
                         if(tokens>0){
@@ -124,7 +125,7 @@ void scan_keys_matrix(){
                         }
                     }
                     else if(token_id == exe || token_id == equal){
-                        disPlayAnswer();
+                        displayAnswer();
                     }
                     else if(token_id == UP || token_id == DN){
                         
