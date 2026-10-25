@@ -23,7 +23,6 @@ uint8_t row_pins[5] = {4,3,2,1,0};
 uint8_t col_pins[10] = {5,6,7,8,9,10,11,12,13,14};
 
 enum keyCodes equation[64];
-float answer;
 
 int tokens = 0;
 int brightness_count = 50;
@@ -31,6 +30,7 @@ char answer[10];
 int cursor_pos = 0;
 bool shifted = false;
 bool graph_mode = false;
+bool brt_mode = 0;
 
 
 int lcd_init(){
@@ -42,8 +42,16 @@ int lcd_init(){
     return 0;
 }
 
-void updateBrightness(int x){
-    
+void updateBrightness(){
+    if(brightness_count>100) brightness_count = 100;
+    else if(brightness_count<0) brightness_count = 0;
+
+    pwm_set_gpio_level(BRIGHTNESS_GPIO, brightness_count*65535/100);
+
+}
+
+float evaluate(char *eqn){
+
 }
 
 void displayGraph(){
@@ -55,7 +63,28 @@ void updateVars(){
 }
 
 void displayAnswer(){
+    char math_str[128] = "";
 
+    for(int i = 0; i<tokens; i++){
+        if(equation[i] == ans){
+            strcat(math_str, answer);
+        }
+        else{
+            int row = equation[i]/5;
+            int col = equation[i]%5;
+            strcat(math_str, keymap[row][col]);
+        }
+
+
+        if(checkComplete(math_str){
+            float ans_val = evaluate(math_str);
+            GFX_printf("%.4f", ans_val);
+            GFX_flush();
+        }
+        else{
+            
+        }
+    }
 }
 
 void keys_matrix_init(){
@@ -86,7 +115,13 @@ void scan_keys_matrix(){
                         cursor_pos = 0;
                     }
                     else if(token_id == DEL){
-                        if(tokens>0) tokens--;
+                        if(tokens>0){
+                            for(int k = cursor_pos; k>0;k--){
+                                equation[k-1] = equation[k];
+                            }
+                            tokens--;
+                            cursor_pos--;
+                        }
                     }
                     else if(token_id == exe || token_id == equal){
                         disPlayAnswer();
@@ -95,13 +130,22 @@ void scan_keys_matrix(){
                         
                     }
                     else if(token_id == RT){
-                        if(cursor_pos<tokens) cursor_pos++;
+                        if(brt_mode){
+                            if(brightness_count<90) brightness_count += 10;
+                            updateBrightness();
+                        }
+                        else {if(cursor_pos<tokens) cursor_pos++;}
                     }
                     else if(token_id == LT){
-                        if(cursor_pos>0) cursor_pos--;
+                        if(brt_mode){
+                            if(brightness_count>10) brightness_count -= 10;
+                            updateBrightness();
+                        }
+                        else {if(cursor_pos>0) cursor_pos--;}
                     }
                     else if(token_id == BRT){
-                        updateBrightness(brightness_count);
+                        if(brt_mode) brt_mode = 0;
+                        else brt_mode = 1;
                     }
                     else if(token_id == grph){
                         graph_mode = 1;
@@ -114,8 +158,9 @@ void scan_keys_matrix(){
                         updateVars();
                     }
                     else{
-                        equation[tokens] = token_id;
-                        tokens++;
+                        equation[cursor_pos] = token_id;
+                        if(cursor_pos==tokens) tokens++;
+                        cursor_pos++;
                     }
                 }
                 while(gpio_get(j));
@@ -141,13 +186,42 @@ int main()
     gpio_set_function(PIN_CS, GPIO_OUT);
     gpio_put(PIN_CS, 1);
 
+    gpio_init(BRIGHTNESS_GPIO);
+    gpio_set_function(BRIGHTNESS_GPIO, GPIO_FUNC_PWM);
+    uint brt_slice = pwm_gpio_to_slice_num(BRIGHTNESS_GPIO);
+    pwm_set_enabled(brt_slice, 1);
+    pwm_set_wrap(brt_slice, 65535);
+
     keys_matrix_init();
     lcd_init();
     
-    while (true) {
+    while(true){
+        GFX_clearScreen();
         GFX_setCursor(0,0);
-        GFX_printf("Hello, World %d", ++c);
+
+        for(int i = 0; i<=tokens; i++){
+            if(i==cursor_pos){
+                GFX_printf("_");
+            }
+            if (i<tokens){
+                int row = equation[i]/5;
+                int col = equation[i]%5;
+                GFX_printf("%s", keymap[row][col]);
+            }
+        }
+
+
+        if(shifted){
+            GFX_setCursor(0, 300);
+            GFX_printf("SHIFT");
+        }
+        if(brt_mode){
+            GFX_setCursor(0, 200);
+            GFX_printf("BRIGHTNESS: %d", brightness_count);
+        }
         GFX_flush();
+
         scan_keys_matrix();
+        
     }
 }
