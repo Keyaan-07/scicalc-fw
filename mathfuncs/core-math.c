@@ -1,5 +1,6 @@
 #include <math.h>
 #define pi 3.14158256
+#include "core-math.h"
 
 float divide(float x, float y){
     if(y==0) return NAN;

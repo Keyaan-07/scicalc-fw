@@ -1,9 +1,62 @@
 #include "pico/stdlib.h"
 
 //special function keys(non mathematical things):
-// AC, UP, DN, LT, RT, DEL, exe, shift, grph, vars, ans, =
+// AC, UP, DN, LT, RT, DEL, exe, shift, grph, vars, ans, =, BRT
 
-const char *matrix[10][5] = {
+enum keyCodes{
+    OFF,
+    AC,
+    UP,
+    DEL,
+    ON,
+    BRT, 
+    LT, 
+    DN, 
+    RT, 
+    exe,
+    asin,
+    acos,
+    atan,
+    ln,
+    shift,
+    sin,
+    cos,
+    tan,
+    log,
+    rst,
+    X,
+    Y,
+    pi,
+    e,
+    pow2,
+    par_l,
+    par_r,
+    abs,
+    pow,
+    sqrt,
+    num_0,
+    dot,
+    paren_minus,
+    slash,
+    grph,
+    num_7,
+    num_8,
+    num_9,
+    mul,
+    vars,
+    num_4,
+    num_5,
+    num_6,
+    minus,
+    ans,
+    num_1,
+    num_2,
+    num_3,
+    plus, 
+    equal
+};
+
+const char *keymap[10][5] = {
     {"OFF" , "AC"  , "UP"  , "DEL", "ON"},
     {"BRT" , "LT"  , "DN"  , "RT" , "exe"},
     {"asin", "acos", "atan", "ln" , "shift"},

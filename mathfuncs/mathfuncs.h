@@ -3,5 +3,6 @@
 
 #include "matmul.h"
 #include "parser.h"
+#include "core-math.h"
 
 #endif
